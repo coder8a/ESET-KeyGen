@@ -588,61 +588,61 @@ def main(disable_exit=False):
                 output_line = f'\n🛡 Продукт: *{l_name}*\n🕐 Срок действия: *{l_out_date}*\n🔐 Ключ активации: `{l_key}`'
                 output_line_vk = f'\n🛡 Продукт: {l_name}\n\n🕐 Срок действия: {l_out_date}\n\n🔐 Ключ активации: {l_key}'
                 output_filename = 'ESET ACCOUNTS.txt'
-                    if args['key']:
-                        activate_products = '\n🔓 Ключ подходит для: *ESET Smart Security Premium, ESET HOME Security Premium, ESET MOBILE SECURITY*'
-                        activate_products_vk = '\n\n🔓 Ключ подходит для: ESET Smart Security Premium, ESET HOME Security Premium, ESET MOBILE SECURITY'
-                        hashtags = '\n\n\\#ESET \\#NOD32 \\#ESS \\#ESSP \\#HomeSecurity \\#SmartSecurity \\#keys \\#license'
-                        hashtags_vk = '\n\n#ESET #NOD32 #ESS #ESSP #HomeSecurity #SmartSecurity #keys #license #НОД32 #ключ #активация #халява'
-                        photo_attachment = 'photo-203143822_457239282'
-                    if args['small_business_key']:
-                        activate_products = '\n🔓 Ключ подходит для: *ESET Small Business Security, ESET Cyber Security \(MacOS\), ESET Mobile Security, ESET Smart TV Security, ESET Safe Server*'
-                        activate_products_vk = '\n\n🔓 Ключ подходит для: ESET Small Business Security, ESET Cyber Security (MacOS), ESET Mobile Security, ESET Smart TV Security, ESET Safe Server'
-                        hashtags = '\n\n\\#ESET \\#NOD32 \\#ESBS \\#SmallBusiness \\#keys \\#license'
-                        hashtags_vk = '\n\n#ESET #NOD32 #ESBS #SmallBusiness #keys #license #НОД32 #ключ #активация #халява'
-                        photo_attachment = 'photo-203143822_457239283'
-                    if args['vpn_codes']:
-                        activate_products = '\n🔓 Ключ подходит для: *ESET Small Business Security, ESET Cyber Security \(MacOS\), ESET Mobile Security, ESET Smart TV Security, ESET Safe Server*'
-                        activate_products_vk = '\n\n🔓 Ключ подходит для: ESET Small Business Security, ESET Cyber Security (MacOS), ESET Mobile Security, ESET Smart TV Security, ESET Safe Server'
-                        hashtags = '\n\n\\#ESET \\#NOD32 \\#ESBS \\#SmallBusiness \\#keys \\#license'
-                        hashtags_vk = '\n\n#ESET #NOD32 #ESBS #SmallBusiness #keys #license #НОД32 #ключ #активация #халява'
-                        photo_attachment = 'photo-203143822_457239283'
-                    bot.send_message(-1002475137672, output_line + activate_products +  "\n\n" + please_comment +"\n\n[⚡️Проголосовать за группу\!](https://t\.me/boost/mynod32) \| [\@mynod32](https://t\.me/\+wLqOncLmqAIwZGM6)" + hashtags, disable_web_page_preview=True, disable_notification=True)
-                    #bot.send_message(-1001233475775, output_line + activate_products +  "\n\n" + please_comment +"\n\n[⚡️Проголосовать за группу\!](https://t\.me/boost/mynod32) \| [\@mynod32](https://t\.me/\+wLqOncLmqAIwZGM6)" + hashtags, disable_web_page_preview=True, disable_notification=True)  
-                    #vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=604800)
-                    #vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + activate_products_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=3600)
-                    #vk2.wall.post(owner_id=-229183047, message=output_line_vk + activate_products_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=3600)
-                    if args['vpn_codes']:
-                        EV_obj = EV(email_obj, driver, ER_obj.window_handle)
-                        EV_obj.sendRequestForVPNCodes()
-                        vpn_codes = EV_obj.getVPNCodes()
-                        if not args['custom_email_api']:
-                            vpn_codes_line = ', '.join(vpn_codes)
-                            output_line = '\n'.join([
-                            '',
-                            '-------------------------------------------------',
-                            f'Account Email: {email_obj.email}',
-                            f'Account Password: {e_passwd}',
-                            '',
-                            f'License Name: {l_name}',
-                            f'License Key: {l_key}',
-                            f'License Out Date: {l_out_date}',
-                            '',
-                            f'VPN Codes: {vpn_codes_line}',
-                            '-------------------------------------------------',
-                            ''
-                            ])
-                            hashtags = '\n\n\\#ESET \\#NOD32 \\#VPN \\#proxy \\#keys \\#license \\#впн \\#прокси'
-                            hashtags_vk = '\n\n#ESET #NOD32 #VPN #proxy #keys #license #впн #прокси #НОД32 #ключ #активация #халява'
-                            photo_attachment = 'photo-203143822_457239280'
-                            license_keys_formatted = "".join([f"🔐 Ключ активации: `{key}`\n\n" for key in vpn_codes_line.split(', ')])
-                            license_keys_formatted_vk = "".join([f"🔐 Ключ активации: {key}\n" for key in vpn_codes_line.split(', ')])
-                            output_line = f'\n🛡 Продукт: *ESET VPN*\n🕐 Срок действия: *{l_out_date}*\n\n{license_keys_formatted}\n'
-                            output_line_vk = f'\n🛡 Продукт: ESET VPN\n\n🕐 Срок действия: {l_out_date}\n\n{license_keys_formatted_vk}\n'
-                            bot.send_message(-1002475137672, output_line + please_comment +"\n\n[⚡️Проголосовать за группу\!](https://t\.me/boost/mynod32) \| [\@mynod32](https://t\.me/\+wLqOncLmqAIwZGM6)" + hashtags, disable_web_page_preview=True, disable_notification=True)
-                            #bot.send_message(-1001233475775, output_line + please_comment +"\n\n[⚡️Проголосовать за группу\!](https://t\.me/boost/mynod32) \| [\@mynod32](https://t\.me/\+wLqOncLmqAIwZGM6)" + hashtags, disable_web_page_preview=True, disable_notification=True)
-                            #vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=604800)
-                            #vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=3600)
-                            #vk2.wall.post(owner_id=-229183047, message=output_line_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=3600)
+                if args['key']:
+                    activate_products = '\n🔓 Ключ подходит для: *ESET Smart Security Premium, ESET HOME Security Premium, ESET MOBILE SECURITY*'
+                    activate_products_vk = '\n\n🔓 Ключ подходит для: ESET Smart Security Premium, ESET HOME Security Premium, ESET MOBILE SECURITY'
+                    hashtags = '\n\n\\#ESET \\#NOD32 \\#ESS \\#ESSP \\#HomeSecurity \\#SmartSecurity \\#keys \\#license'
+                    hashtags_vk = '\n\n#ESET #NOD32 #ESS #ESSP #HomeSecurity #SmartSecurity #keys #license #НОД32 #ключ #активация #халява'
+                    photo_attachment = 'photo-203143822_457239282'
+                if args['small_business_key']:
+                    activate_products = '\n🔓 Ключ подходит для: *ESET Small Business Security, ESET Cyber Security \(MacOS\), ESET Mobile Security, ESET Smart TV Security, ESET Safe Server*'
+                    activate_products_vk = '\n\n🔓 Ключ подходит для: ESET Small Business Security, ESET Cyber Security (MacOS), ESET Mobile Security, ESET Smart TV Security, ESET Safe Server'
+                    hashtags = '\n\n\\#ESET \\#NOD32 \\#ESBS \\#SmallBusiness \\#keys \\#license'
+                    hashtags_vk = '\n\n#ESET #NOD32 #ESBS #SmallBusiness #keys #license #НОД32 #ключ #активация #халява'
+                    photo_attachment = 'photo-203143822_457239283'
+                if args['vpn_codes']:
+                    activate_products = '\n🔓 Ключ подходит для: *ESET Small Business Security, ESET Cyber Security \(MacOS\), ESET Mobile Security, ESET Smart TV Security, ESET Safe Server*'
+                    activate_products_vk = '\n\n🔓 Ключ подходит для: ESET Small Business Security, ESET Cyber Security (MacOS), ESET Mobile Security, ESET Smart TV Security, ESET Safe Server'
+                    hashtags = '\n\n\\#ESET \\#NOD32 \\#ESBS \\#SmallBusiness \\#keys \\#license'
+                    hashtags_vk = '\n\n#ESET #NOD32 #ESBS #SmallBusiness #keys #license #НОД32 #ключ #активация #халява'
+                    photo_attachment = 'photo-203143822_457239283'
+                bot.send_message(-1002475137672, output_line + activate_products +  "\n\n" + please_comment +"\n\n[⚡️Проголосовать за группу\!](https://t\.me/boost/mynod32) \| [\@mynod32](https://t\.me/\+wLqOncLmqAIwZGM6)" + hashtags, disable_web_page_preview=True, disable_notification=True)
+                #bot.send_message(-1001233475775, output_line + activate_products +  "\n\n" + please_comment +"\n\n[⚡️Проголосовать за группу\!](https://t\.me/boost/mynod32) \| [\@mynod32](https://t\.me/\+wLqOncLmqAIwZGM6)" + hashtags, disable_web_page_preview=True, disable_notification=True)  
+                #vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=604800)
+                #vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + activate_products_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=3600)
+                #vk2.wall.post(owner_id=-229183047, message=output_line_vk + activate_products_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=3600)
+                if args['vpn_codes']:
+                    EV_obj = EV(email_obj, driver, ER_obj.window_handle)
+                    EV_obj.sendRequestForVPNCodes()
+                    vpn_codes = EV_obj.getVPNCodes()
+                    if not args['custom_email_api']:
+                        vpn_codes_line = ', '.join(vpn_codes)
+                        output_line = '\n'.join([
+                        '',
+                        '-------------------------------------------------',
+                        f'Account Email: {email_obj.email}',
+                        f'Account Password: {e_passwd}',
+                        '',
+                        f'License Name: {l_name}',
+                        f'License Key: {l_key}',
+                        f'License Out Date: {l_out_date}',
+                        '',
+                        f'VPN Codes: {vpn_codes_line}',
+                        '-------------------------------------------------',
+                        ''
+                        ])
+                        hashtags = '\n\n\\#ESET \\#NOD32 \\#VPN \\#proxy \\#keys \\#license \\#впн \\#прокси'
+                        hashtags_vk = '\n\n#ESET #NOD32 #VPN #proxy #keys #license #впн #прокси #НОД32 #ключ #активация #халява'
+                        photo_attachment = 'photo-203143822_457239280'
+                        license_keys_formatted = "".join([f"🔐 Ключ активации: `{key}`\n\n" for key in vpn_codes_line.split(', ')])
+                        license_keys_formatted_vk = "".join([f"🔐 Ключ активации: {key}\n" for key in vpn_codes_line.split(', ')])
+                        output_line = f'\n🛡 Продукт: *ESET VPN*\n🕐 Срок действия: *{l_out_date}*\n\n{license_keys_formatted}\n'
+                        output_line_vk = f'\n🛡 Продукт: ESET VPN\n\n🕐 Срок действия: {l_out_date}\n\n{license_keys_formatted_vk}\n'
+                        bot.send_message(-1002475137672, output_line + please_comment +"\n\n[⚡️Проголосовать за группу\!](https://t\.me/boost/mynod32) \| [\@mynod32](https://t\.me/\+wLqOncLmqAIwZGM6)" + hashtags, disable_web_page_preview=True, disable_notification=True)
+                        #bot.send_message(-1001233475775, output_line + please_comment +"\n\n[⚡️Проголосовать за группу\!](https://t\.me/boost/mynod32) \| [\@mynod32](https://t\.me/\+wLqOncLmqAIwZGM6)" + hashtags, disable_web_page_preview=True, disable_notification=True)
+                        #vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=604800)
+                        #vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=3600)
+                        #vk2.wall.post(owner_id=-229183047, message=output_line_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=3600)
             # ESET ProtectHub
             elif args['protecthub_account'] or args['advanced_key']:
                 EPHR_obj = EPHR(email_obj, e_passwd, DRIVER)
