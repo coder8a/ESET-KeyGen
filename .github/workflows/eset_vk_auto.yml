@@ -1,0 +1,80 @@
+name: Telegram keys generator
+
+on:
+  schedule:
+    - cron: "0 */1 * * *"  # Runs every hour
+  workflow_dispatch:  # Optional: keep for manual testing
+
+jobs:
+  Linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate key on Linux
+        run: |
+          ACCOUNT=0
+          KEY=1
+          MAIL=emailfake
+          KEY_TYPE=--small-business-key
+          BRANCH=main
+
+          git clone -b ${BRANCH} https://github.com/coder8a/ESET-KeyGen.git
+          cd ESET-KeyGen
+
+          sudo apt update
+          sudo apt install -y python3-pip python3-venv
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+          if [[ ${ACCOUNT} -ne 0 && ${KEY} -ne 0 ]]; then
+            python3 main.py --auto-detect-browser --account --email-api ${MAIL} --skip-update-check --no-logo --token ${{ secrets.TOKEN }} --disable-progress-bar --disable-logging --repeat ${ACCOUNT}
+            python3 main.py --auto-detect-browser ${KEY_TYPE} --email-api ${MAIL} --skip-update-check --no-logo --token ${{ secrets.TOKEN }} --disable-progress-bar --disable-logging --repeat ${KEY}
+            #echo "Account:" >> $GITHUB_STEP_SUMMARY
+            cat ./*ACCOUNTS.txt >> $GITHUB_STEP_SUMMARY
+            echo -e "\nKey:" >> $GITHUB_STEP_SUMMARY
+            cat ./*KEYS.txt >> $GITHUB_STEP_SUMMARY
+          elif [[ ${ACCOUNT} -ne 0 ]]; then
+            python3 main.py --auto-detect-browser --account --email-api ${MAIL} --skip-update-check --no-logo --token ${{ secrets.TOKEN }} --disable-progress-bar --disable-logging --repeat ${ACCOUNT}
+            #echo -e "\nAccount:" >> $GITHUB_STEP_SUMMARY
+            cat ./*ACCOUNTS.txt >> $GITHUB_STEP_SUMMARY
+          elif [[ ${KEY} -ne 0 ]]; then
+            python3 main.py --auto-detect-browser ${KEY_TYPE} --email-api ${MAIL} --skip-update-check --no-logo --token ${{ secrets.TOKEN }} --disable-progress-bar --disable-logging --repeat ${KEY}
+            echo -e "\nKey:" >> $GITHUB_STEP_SUMMARY
+            cat ./*KEYS.txt >> $GITHUB_STEP_SUMMARY
+          fi
+
+  macOS:
+    runs-on: macos-latest
+    steps:
+      - name: Generate key on macOS
+        run: |
+          ACCOUNT=0
+          KEY=2
+          MAIL=emailfake
+          KEY_TYPE=--key
+          BRANCH=main
+
+          git clone -b ${BRANCH} https://github.com/coder8a/ESET-KeyGen.git
+          cd ESET-KeyGen
+
+          brew install python
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+          if [[ ${ACCOUNT} -ne 0 && ${KEY} -ne 0 ]]; then
+            python3 main.py --auto-detect-browser --account --email-api ${MAIL} --skip-update-check --no-logo --vktoken ${{ secrets.VKTOKEN }} --vktoken2 ${{ secrets.VKTOKEN2 }} --vkgroupid ${{ secrets.VKGROUPID }} --token ${{ secrets.TOKEN }} --disable-progress-bar --disable-logging --repeat ${ACCOUNT}
+            python3 main.py --auto-detect-browser ${KEY_TYPE} --email-api ${MAIL} --skip-update-check --no-logo --vktoken ${{ secrets.VKTOKEN }} --vktoken2 ${{ secrets.VKTOKEN2 }} --vkgroupid ${{ secrets.VKGROUPID }} --token ${{ secrets.TOKEN }} --disable-progress-bar --disable-logging --repeat ${KEY}
+            #echo "Account:" >> $GITHUB_STEP_SUMMARY
+            cat ./*ACCOUNTS.txt >> $GITHUB_STEP_SUMMARY
+            echo -e "\nKey:" >> $GITHUB_STEP_SUMMARY
+            cat ./*KEYS.txt >> $GITHUB_STEP_SUMMARY
+          elif [[ ${ACCOUNT} -ne 0 ]]; then
+            python3 main.py --auto-detect-browser --account --email-api ${MAIL} --skip-update-check --no-logo --vktoken ${{ secrets.VKTOKEN }} --vktoken2 ${{ secrets.VKTOKEN2 }} --vkgroupid ${{ secrets.VKGROUPID }} --token ${{ secrets.TOKEN }} --disable-progress-bar --disable-logging --repeat ${ACCOUNT}
+            #echo -e "\nAccount:" >> $GITHUB_STEP_SUMMARY
+            cat ./*ACCOUNTS.txt >> $GITHUB_STEP_SUMMARY
+          elif [[ ${KEY} -ne 0 ]]; then
+            python3 main.py --auto-detect-browser ${KEY_TYPE} --email-api ${MAIL} --skip-update-check --no-logo --vktoken ${{ secrets.VKTOKEN }} --vktoken2 ${{ secrets.VKTOKEN2 }} --vkgroupid ${{ secrets.VKGROUPID }} --token ${{ secrets.TOKEN }} --disable-progress-bar --disable-logging --repeat ${KEY}
+            echo -e "\nKey:" >> $GITHUB_STEP_SUMMARY
+            cat ./*KEYS.txt >> $GITHUB_STEP_SUMMARY
+          fi
