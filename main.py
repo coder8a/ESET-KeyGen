@@ -5,6 +5,10 @@ import json
 import sys
 import io
 
+import telebot
+import vk_api
+from vk_api.upload import VkUpload
+
 I_AM_EXECUTABLE = (True if (getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS')) else False)
 PATH_TO_SELF = sys.executable if I_AM_EXECUTABLE else __file__
 CONFIG_PATH = pathlib.Path(PATH_TO_SELF).parent.resolve().joinpath('eset-keygen-config.json')
@@ -355,7 +359,10 @@ def parse_argv(sys_argv=None):
         args_parser.add_argument('--disable-output-file', action='store_true', help='Disables the output txt file generation')
         args_parser.add_argument('--repeat', type=int, default=1, help='Specifies how many times to repeat generation')
         args_parser.add_argument('--proxy-file', type=str, default=DEFAULT_PATH_TO_PROXY_FILE, help=f'Specifies the path from where the list of proxies will be read from, default - {DEFAULT_PATH_TO_PROXY_FILE}')
-
+        args_parser.add_argument('--token', help='Token value')
+        args_parser.add_argument('--vktoken', type=str, default='', help='VK API Token for posting to group')
+        args_parser.add_argument('--vktoken2', type=str, default='', help='VK API Token for posting to group')
+        args_parser.add_argument('--vkgroupid', type=str, default='', help='VK Group ID (with minus sign)')
         # Logging
         args_logging = args_parser.add_mutually_exclusive_group()
         args_logging.add_argument('--silent', action='store_true', help='Disables message output, output called by the --custom-email-api argument will still be output!')
@@ -460,7 +467,21 @@ def main(disable_exit=False):
                 logging.error("EXC_INFO:", exc_info=True)
                 #console_log(e, ERROR, silent_mode=SILENT_MODE)
         
-        # initialization and configuration of everything necessary for work            
+        # initialization and configuration of everything necessary for work      
+        please_comment = "Активировали ⁉\nПоставьте лайк ❤ и напишите в комментарии 💬\n🍺 Поблагодарить \- vk\.cc/cHjcEr"
+        token_value = args['token']
+        bot = telebot.TeleBot(token_value, parse_mode='MARKDOWNv2')
+        vk_token_value = args['vktoken']
+        vk_group_id_value = args['vkgroupid']
+        vk_session = vk_api.VkApi(token=vk_token_value,api_version=5.131)
+        vk = vk_session.get_api()
+        vk_token_value2 = args['vktoken2']
+        vk_session2 = vk_api.VkApi(token=vk_token_value2,api_version=5.131)
+        vk2 = vk_session2.get_api()
+        
+        vk_end = "\n\n\n\nАктивировали ⁉\nПоставьте лайк ❤ и напишите в комментарии 💬\n🍺 Поблагодарить - vk.cc/cHjcEr\n\n\n\nНе успеваешь взять бесплатный ключ?\n✅ Подписывайся на наш Telegram канал t.me/mynod32\n✅ Опция \"Персональный ключ на 30 дней\" - 50 руб.\n✅ Опция \"Ключ на 90 дней для EIS, EAV\" - 120 руб."
+        upload = VkUpload(vk_session)
+
         webdriver_path = None
         browser_name = GOOGLE_CHROME
         custom_browser_location = None if args['custom_browser_location'] == '' else args['custom_browser_location']
@@ -563,51 +584,77 @@ def main(disable_exit=False):
                     '-------------------------------------------------',
                     ''
                 ])
-                output_filename = 'ESET ACCOUNTS.txt'
-                if args['key'] or args['small_business_key'] or args['vpn_codes']:
-                    output_filename = 'ESET KEYS.txt'
-                    EK_obj = EK(email_obj, DRIVER, 'ESET HOME' if args['key'] else 'SMALL BUSINESS')
-                    EK_obj.sendRequestForKey()
+                EK_obj = EK(email_obj, DRIVER, 'ESET HOME' if args['key'] else 'SMALL BUSINESS')
+                EK_obj.sendRequestForKey()
+                l_name, l_key, l_out_date = EK_obj.getLD()
+                l_out_date = l_out_date.replace(".", "/")
+                output_line = f'\n🛡 Продукт: *{l_name}*\n🕐 Срок действия: *{l_out_date}*\n🔐 Ключ активации: `{l_key}`'
+                output_line_vk = f'\n🛡 Продукт: {l_name}\n\n🕐 Срок действия: {l_out_date}\n\n🔐 Ключ активации: {l_key}'
+                if args['key']:
+                    activate_products = '\n🔓 Ключ подходит для: *ESET Smart Security Premium, ESET HOME Security Premium, ESET MOBILE SECURITY*'
+                    activate_products_vk = '\n\n🔓 Ключ подходит для: ESET Smart Security Premium, ESET HOME Security Premium, ESET MOBILE SECURITY'
+                    hashtags = '\n\n\\#ESET \\#NOD32 \\#ESS \\#ESSP \\#HomeSecurity \\#SmartSecurity \\#keys \\#license'
+                    hashtags_vk = '\n\n#ESET #NOD32 #ESS #ESSP #HomeSecurity #SmartSecurity #keys #license #НОД32 #ключ #активация #халява'
+                    photo_attachment = 'photo-203143822_457239282'
+                if args['small_business_key']:
+                    activate_products = '\n🔓 Ключ подходит для: *ESET Small Business Security, ESET Cyber Security \(MacOS\), ESET Mobile Security, ESET Smart TV Security, ESET Safe Server*'
+                    activate_products_vk = '\n\n🔓 Ключ подходит для: ESET Small Business Security, ESET Cyber Security (MacOS), ESET Mobile Security, ESET Smart TV Security, ESET Safe Server'
+                    hashtags = '\n\n\\#ESET \\#NOD32 \\#ESBS \\#SmallBusiness \\#keys \\#license'
+                    hashtags_vk = '\n\n#ESET #NOD32 #ESBS #SmallBusiness #keys #license #НОД32 #ключ #активация #халява'
+                    photo_attachment = 'photo-203143822_457239283'
+                if args['vpn_codes']:
+                    activate_products = '\n🔓 Ключ подходит для: *ESET Small Business Security, ESET Cyber Security \(MacOS\), ESET Mobile Security, ESET Smart TV Security, ESET Safe Server*'
+                    activate_products_vk = '\n\n🔓 Ключ подходит для: ESET Small Business Security, ESET Cyber Security (MacOS), ESET Mobile Security, ESET Smart TV Security, ESET Safe Server'
+                    hashtags = '\n\n\\#ESET \\#NOD32 \\#ESBS \\#SmallBusiness \\#keys \\#license'
+                    hashtags_vk = '\n\n#ESET #NOD32 #ESBS #SmallBusiness #keys #license #НОД32 #ключ #активация #халява'
+                    photo_attachment = 'photo-203143822_457239283'
+                #bot.send_message(-1002475137672, output_line + activate_products +  "\n\n" + please_comment +"\n\n[⚡️Проголосовать за группу\!](https://t\.me/boost/mynod32) \| [\@mynod32](https://t\.me/\+wLqOncLmqAIwZGM6)\n\n" + "[🚀 *QPNet VPN*](https://t\.me/qpnetrubot\?start\=1936643)" + hashtags, disable_web_page_preview=True, disable_notification=True)
+                #bot.send_message(-1001233475775, output_line + activate_products +  "\n\n" + please_comment +"\n\n[⚡️Проголосовать за группу\!](https://t\.me/boost/mynod32) \| [\@mynod32](https://t\.me/\+wLqOncLmqAIwZGM6)\n\n" + "[🚀 *QPNet VPN*](https://t\.me/qpnetrubot\?start\=1936643)" + hashtags, disable_web_page_preview=True, disable_notification=True)  
+                #vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=604800)
+                vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + activate_products_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=3600)
+                vk2.wall.post(owner_id=-229183047, message=output_line_vk + activate_products_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=3600)
+                if args['vpn_codes']:
+                    EV_obj = EV(email_obj, driver, ER_obj.window_handle)
+                    EV_obj.sendRequestForVPNCodes()
+                    vpn_codes = EV_obj.getVPNCodes()
                     l_name, l_key, l_out_date = EK_obj.getLD()
-                    output_line = '\n'.join([
+                    l_out_date = l_out_date.replace(".", "/")
+                    if not args['custom_email_api']:
+                        vpn_codes_line = ', '.join(vpn_codes)
+                        output_line = '\n'.join([
                         '',
                         '-------------------------------------------------',
-                        '}{ :liamE tnuoccA'[::-1].format(email_obj.email),
-                        '}{ :drowssaP tnuoccA'[::-1].format(e_passwd),
+                        f'Account Email: {email_obj.email}',
+                        f'Account Password: {e_passwd}',
                         '',
-                        '}{ :emaN esneciL'[::-1].format(l_name),
-                        '}{ :yeK esneciL'[::-1].format(l_key),
-                        '}{ :etaD tuO esneciL'[::-1].format(l_out_date),
+                        f'License Name: {l_name}',
+                        f'License Key: {l_key}',
+                        f'License Out Date: {l_out_date}',
+                        '',
+                        f'VPN Codes: {vpn_codes_line}',
                         '-------------------------------------------------',
                         ''
-                    ])
-                    if args['vpn_codes']:
-                        EV_obj = EV(email_obj, DRIVER, ER_obj.window_handle)
-                        EV_obj.sendRequestForVPNCodes()
-                        vpn_codes = EV_obj.getVPNCodes()
-                        if not args['custom_email_api']:
-                            vpn_codes_line = ', '.join(vpn_codes)
-                            output_line = '\n'.join([
-                                '',
-                                '-------------------------------------------------',
-                                '}{ :liamE tnuoccA'[::-1].format(email_obj.email),
-                                '}{ :drowssaP tnuoccA'[::-1].format(e_passwd),
-                                '',
-                                '}{ :emaN esneciL'[::-1].format(l_name),
-                                '}{ :yeK esneciL'[::-1].format(l_key),
-                                '}{ :etaD tuO esneciL'[::-1].format(l_out_date),
-                                '',
-                                '}{ :sedoC NPV'[::-1].format(vpn_codes_line),
-                                '-------------------------------------------------',
-                                ''
-                            ])
-
+                        ])
+                        hashtags = '\n\n\\#ESET \\#NOD32 \\#VPN \\#proxy \\#keys \\#license \\#впн \\#прокси'
+                        hashtags_vk = '\n\n#ESET #NOD32 #VPN #proxy #keys #license #впн #прокси #НОД32 #ключ #активация #халява'
+                        photo_attachment = 'photo-203143822_457239280'
+                        license_keys_formatted = "".join([f"🔐 Ключ активации: `{key}`\n\n" for key in vpn_codes_line.split(', ')])
+                        license_keys_formatted_vk = "".join([f"🔐 Ключ активации: {key}\n" for key in vpn_codes_line.split(', ')])
+                        output_line = f'\n🛡 Продукт: *ESET VPN*\n🕐 Срок действия: *{l_out_date}*\n\n{license_keys_formatted}\n'
+                        output_line_vk = f'\n🛡 Продукт: ESET VPN\n\n🕐 Срок действия: {l_out_date}\n\n{license_keys_formatted_vk}\n'
+                        #bot.send_message(-1002475137672, output_line + please_comment +"\n\n[⚡️Проголосовать за группу\!](https://t\.me/boost/mynod32) \| [\@mynod32](https://t\.me/\+wLqOncLmqAIwZGM6)\n\n" + "[🚀 *QPNet VPN*](https://t\.me/qpnetrubot\?start\=1936643)" + hashtags, disable_web_page_preview=True, disable_notification=True)
+                        #bot.send_message(-1001233475775, output_line + please_comment +"\n\n[⚡️Проголосовать за группу\!](https://t\.me/boost/mynod32) \| [\@mynod32](https://t\.me/\+wLqOncLmqAIwZGM6)\n\n" + "[🚀 *QPNet VPN*](https://t\.me/qpnetrubot\?start\=1936643)" + hashtags, disable_web_page_preview=True, disable_notification=True)
+                        #vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=604800)
+                        vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=3600)
+                        vk2.wall.post(owner_id=-229183047, message=output_line_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=3600)
             # ESET ProtectHub
             elif args['protecthub_account'] or args['advanced_key']:
                 EPHR_obj = EPHR(email_obj, e_passwd, DRIVER)
                 EPHR_obj.createAccount()
                 EPHR_obj.confirmAccount()
                 EPHR_obj.activateAccount()
+                l_name, l_key, l_out_date = EPHR_obj.getLD()
+                l_out_date = l_out_date.replace(".", "/")
                 output_line = '\n'.join([
                     '',
                     '---------------------------------------------------------------------',
@@ -616,9 +663,7 @@ def main(disable_exit=False):
                     '---------------------------------------------------------------------',
                     ''
                 ])    
-                output_filename = 'ESET ACCOUNTS.txt'
                 if args['advanced_key']:
-                    output_filename = 'ESET KEYS.txt'
                     EPHK_obj = EPHK(email_obj, e_passwd, DRIVER)
                     l_name, l_key, l_out_date, obtained_from_site = EPHK_obj.getLD()
                     if l_name is not None:
