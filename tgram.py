@@ -576,6 +576,8 @@ def main(disable_exit=False):
                 ER_obj = ER(email_obj, e_passwd, DRIVER)
                 ER_obj.createAccount()
                 ER_obj.confirmAccount()
+                l_name, l_key, l_out_date = EK_obj.getLD()
+                l_out_date = l_out_date.replace(".", "/")
                 output_line = '\n'.join([
                     '',
                     '-------------------------------------------------',
@@ -614,6 +616,8 @@ def main(disable_exit=False):
                     EV_obj = EV(email_obj, driver, ER_obj.window_handle)
                     EV_obj.sendRequestForVPNCodes()
                     vpn_codes = EV_obj.getVPNCodes()
+                    l_name, l_key, l_out_date = EK_obj.getLD()
+                    l_out_date = l_out_date.replace(".", "/")
                     if not args['custom_email_api']:
                         vpn_codes_line = ', '.join(vpn_codes)
                         output_line = '\n'.join([
@@ -648,6 +652,8 @@ def main(disable_exit=False):
                 EPHR_obj.createAccount()
                 EPHR_obj.confirmAccount()
                 EPHR_obj.activateAccount()
+                l_name, l_key, l_out_date = EK_obj.getLD()
+                l_out_date = l_out_date.replace(".", "/")
                 output_line = '\n'.join([
                     '',
                     '---------------------------------------------------------------------',
