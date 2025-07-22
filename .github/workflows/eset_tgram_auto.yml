@@ -12,7 +12,7 @@ jobs:
       - name: Generate key on Linux
         run: |
           ACCOUNT=0
-          KEY=2
+          KEY=1
           MAIL=emailfake
           KEY_TYPE=--small-business-key
           BRANCH=main
