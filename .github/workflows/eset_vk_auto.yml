@@ -1,4 +1,4 @@
-name: Telegram keys generator
+name: VK keys generator
 
 on:
   schedule:
