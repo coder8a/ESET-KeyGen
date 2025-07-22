@@ -576,7 +576,6 @@ def main(disable_exit=False):
                 ER_obj = ER(email_obj, e_passwd, DRIVER)
                 ER_obj.createAccount()
                 ER_obj.confirmAccount()
-                l_out_date = l_out_date.replace(".", "/")
                 output_line = '\n'.join([
                     '',
                     '-------------------------------------------------',
