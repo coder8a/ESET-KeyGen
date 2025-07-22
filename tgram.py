@@ -576,8 +576,6 @@ def main(disable_exit=False):
                 ER_obj = ER(email_obj, e_passwd, DRIVER)
                 ER_obj.createAccount()
                 ER_obj.confirmAccount()
-                l_name, l_key, l_out_date = EK_obj.getLD()
-                l_out_date = l_out_date.replace(".", "/")
                 output_line = '\n'.join([
                     '',
                     '-------------------------------------------------',
@@ -586,6 +584,10 @@ def main(disable_exit=False):
                     '-------------------------------------------------',
                     ''
                 ])
+                EK_obj = EK(email_obj, DRIVER, 'ESET HOME' if args['key'] else 'SMALL BUSINESS')
+                EK_obj.sendRequestForKey()
+                l_name, l_key, l_out_date = EK_obj.getLD()
+                l_out_date = l_out_date.replace(".", "/")
                 output_line = f'\n🛡 Продукт: *{l_name}*\n🕐 Срок действия: *{l_out_date}*\n🔐 Ключ активации: `{l_key}`'
                 output_line_vk = f'\n🛡 Продукт: {l_name}\n\n🕐 Срок действия: {l_out_date}\n\n🔐 Ключ активации: {l_key}'
                 output_filename = 'ESET ACCOUNTS.txt'
