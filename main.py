@@ -683,6 +683,7 @@ def main(disable_exit=False):
             logging.info(output_line)
             console_log(output_line, silent_mode=SILENT_MODE)
             if not args['disable_output_file']:
+                output_filename = 'ESET KEYS.txt'
                 date = datetime.datetime.now()
                 f = open(f"{str(date.day)}.{str(date.month)}.{str(date.year)} - "+output_filename, 'a')
                 f.write(output_line)
