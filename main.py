@@ -479,7 +479,7 @@ def main(disable_exit=False):
         vk_session2 = vk_api.VkApi(token=vk_token_value2,api_version=5.131)
         vk2 = vk_session2.get_api()
         
-        vk_end = "\n\n\n\nАктивировали ⁉\nПоставьте лайк ❤ и напишите в комментарии 💬\n🍺 Поблагодарить - vk.cc/cHjcEr\n\n\n\nНе успеваешь взять бесплатный ключ?\n✅ Подписывайся на наш Telegram канал t.me/mynod32\n✅ Опция \"Персональный ключ на 30 дней\" - 50 руб.\n✅ Опция \"Ключ на 90 дней для EIS, EAV\" - 120 руб."
+        vk_end = "\n\n\n\nАктивировали ⁉\nПоставьте лайк ❤ и напишите в комментарии 💬\n🍺 Поблагодарить - vk.cc/cMYJRe\n\n\n\n🚀 QPNet VPN - https://vk.cc/cNtH3q"\n\n\n\nНе успеваешь взять бесплатный ключ?\n✅ Подписывайся на наш Telegram канал t.me/mynod32\n✅ Опция \"Персональный ключ на 30 дней\" - 50 руб.\n✅ Опция \"Ключ на 90 дней для EIS, EAV\" - 120 руб."
         upload = VkUpload(vk_session)
 
         webdriver_path = None
@@ -611,8 +611,8 @@ def main(disable_exit=False):
                 #bot.send_message(-1002475137672, output_line + activate_products +  "\n\n" + please_comment +"\n\n[⚡️Проголосовать за группу\!](https://t\.me/boost/mynod32) \| [\@mynod32](https://t\.me/\+wLqOncLmqAIwZGM6)\n\n" + "[🚀 *QPNet VPN*](https://t\.me/qpnetrubot\?start\=1936643)" + hashtags, disable_web_page_preview=True, disable_notification=True)
                 #bot.send_message(-1001233475775, output_line + activate_products +  "\n\n" + please_comment +"\n\n[⚡️Проголосовать за группу\!](https://t\.me/boost/mynod32) \| [\@mynod32](https://t\.me/\+wLqOncLmqAIwZGM6)\n\n" + "[🚀 *QPNet VPN*](https://t\.me/qpnetrubot\?start\=1936643)" + hashtags, disable_web_page_preview=True, disable_notification=True)  
                 #vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=604800)
-                vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + activate_products_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=3600)
-                vk2.wall.post(owner_id=-229183047, message=output_line_vk + activate_products_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=3600)
+                vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + activate_products_vk + vk_end, attachments=photo_attachment, donut_paid_duration=3600)
+                vk2.wall.post(owner_id=-229183047, message=output_line_vk + activate_products_vk + vk_end, attachments=photo_attachment, donut_paid_duration=3600)
                 if args['vpn_codes']:
                     EV_obj = EV(email_obj, driver, ER_obj.window_handle)
                     EV_obj.sendRequestForVPNCodes()
@@ -644,9 +644,9 @@ def main(disable_exit=False):
                         output_line_vk = f'\n🛡 Продукт: ESET VPN\n\n🕐 Срок действия: {l_out_date}\n\n{license_keys_formatted_vk}\n'
                         #bot.send_message(-1002475137672, output_line + please_comment +"\n\n[⚡️Проголосовать за группу\!](https://t\.me/boost/mynod32) \| [\@mynod32](https://t\.me/\+wLqOncLmqAIwZGM6)\n\n" + "[🚀 *QPNet VPN*](https://t\.me/qpnetrubot\?start\=1936643)" + hashtags, disable_web_page_preview=True, disable_notification=True)
                         #bot.send_message(-1001233475775, output_line + please_comment +"\n\n[⚡️Проголосовать за группу\!](https://t\.me/boost/mynod32) \| [\@mynod32](https://t\.me/\+wLqOncLmqAIwZGM6)\n\n" + "[🚀 *QPNet VPN*](https://t\.me/qpnetrubot\?start\=1936643)" + hashtags, disable_web_page_preview=True, disable_notification=True)
-                        #vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=604800)
-                        vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=3600)
-                        vk2.wall.post(owner_id=-229183047, message=output_line_vk + "\n\n", attachments=photo_attachment, donut_paid_duration=3600)
+                        #vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + vk_end, attachments=photo_attachment, donut_paid_duration=604800)
+                        vk.wall.post(owner_id=vk_group_id_value, message=output_line_vk + vk_end, attachments=photo_attachment, donut_paid_duration=3600)
+                        vk2.wall.post(owner_id=-229183047, message=output_line_vk + vk_end, attachments=photo_attachment, donut_paid_duration=3600)
             # ESET ProtectHub
             elif args['protecthub_account'] or args['advanced_key']:
                 EPHR_obj = EPHR(email_obj, e_passwd, DRIVER)
